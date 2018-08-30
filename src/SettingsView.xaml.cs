@@ -1,9 +1,10 @@
 using System.Windows;
 using System.Windows.Controls;
-using MahApps.Metro.Controls;
+using HDT.Plugins.Graveyard;
 using Hearthstone_Deck_Tracker;
+using MahApps.Metro.Controls;
 
-namespace HDT.Plugins.Graveyard
+namespace MulliganWinrate
 {
 	public partial class SettingsView : ScrollViewer
 	{
@@ -39,7 +40,7 @@ namespace HDT.Plugins.Graveyard
 		}
 
 		private void BtnUnlock_Click (object sender, RoutedEventArgs e) {
-			BtnUnlock.Content = Graveyard.Input.Toggle() ? "Lock Graveyards" : "Unlock Graveyards";
+			BtnUnlock.Content = global::MulliganWinrate.MulliganWinrate.Input.Toggle() ? "Lock Graveyards" : "Unlock Graveyards";
 		}
 	}
 }

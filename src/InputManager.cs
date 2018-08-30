@@ -1,24 +1,22 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.Generic;
+using HDT.Plugins.Graveyard;
 using Hearthstone_Deck_Tracker;
 using Core = Hearthstone_Deck_Tracker.API.Core;
 
-namespace HDT.Plugins.Graveyard
+namespace MulliganWinrate
 {
 	public class InputManager
 	{
 		private User32.MouseInput _mouseInput;
 		private StackPanel _player;
-		private StackPanel _enemy;
 
 		private String _selected;
 
-		public InputManager (StackPanel player, StackPanel enemy)
+		public InputManager (StackPanel player)
 		{
 			_player = player;
-			_enemy = enemy;
 		}
 
 		public bool Toggle ()
@@ -49,9 +47,7 @@ namespace HDT.Plugins.Graveyard
 			if (PointInsideControl(_mousePos, _player))
 			{
 				_selected = "player";
-			} else if (PointInsideControl(_mousePos, _enemy)) {
-				_selected = "enemy";
-			}
+			} 
 		}
 
 		private void MouseInputOnLmbUp(object sender, EventArgs eventArgs)
@@ -62,11 +58,7 @@ namespace HDT.Plugins.Graveyard
 			{
 				Settings.Default.PlayerTop = p.Y;
 				Settings.Default.PlayerLeft = p.X;
-			} else if (_selected == "enemy")
-			{
-				Settings.Default.EnemyTop = p.Y;
-				Settings.Default.EnemyLeft = p.X;
-			}
+			} 
 
 			_selected = null;
 		}
@@ -84,11 +76,7 @@ namespace HDT.Plugins.Graveyard
 			{
 				Canvas.SetTop(_player, p.Y);
 				Canvas.SetLeft(_player, p.X);
-			} else if (_selected == "enemy")
-			{
-				Canvas.SetTop(_enemy, p.Y);
-				Canvas.SetLeft(_enemy, p.X);
-			}
+			} 
 		}
 
 		private bool PointInsideControl(Point p, FrameworkElement control) {
