@@ -16,7 +16,7 @@ using Card = Hearthstone_Deck_Tracker.Hearthstone.Card;
 using CoreAPI = Hearthstone_Deck_Tracker.API.Core;
 using Deck = HearthMirror.Objects.Deck;
 
-namespace Graveyard
+namespace MulliganWinrate
 {
     public class WinrateTracker
     {

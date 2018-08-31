@@ -1,7 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Graveyard;
 using HDT.Plugins.Graveyard;
 using Hearthstone_Deck_Tracker.API;
 using Core = Hearthstone_Deck_Tracker.API.Core;

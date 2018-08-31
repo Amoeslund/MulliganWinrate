@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Graveyard;
 using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Controls;
 using Card = Hearthstone_Deck_Tracker.Hearthstone.Card;
