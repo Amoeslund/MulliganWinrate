@@ -40,7 +40,7 @@ namespace MulliganWinrate
 		}
 
 		private void BtnUnlock_Click (object sender, RoutedEventArgs e) {
-			BtnUnlock.Content = global::MulliganWinrate.MulliganWinrate.Input.Toggle() ? "Lock Graveyards" : "Unlock Graveyards";
+			BtnUnlock.Content = global::MulliganWinrate.MulliganWinrate.Input.Toggle() ? "Lock Mulligan Winrates" : "Unlock Mulligan Winrates";
 		}
 	}
 }
