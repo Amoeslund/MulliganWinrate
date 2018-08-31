@@ -7,7 +7,7 @@
               mc:Ignorable="d" VerticalScrollBarVisibility="Auto">
     <StackPanel Width="400">
         
-        <Button Name="BtnUnlock" Width="150" Content="Unlock Mulligan Winrate" Click="BtnUnlock_Click" />
+        <Button Name="BtnUnlock" Width="150" Content="Unlock Mulligan Winrates" Click="BtnUnlock_Click" />
         
         
     </StackPanel>

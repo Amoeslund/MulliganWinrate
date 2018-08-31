@@ -27,7 +27,6 @@ namespace MulliganWinrate
             margin.Top = 20;
             Label.Margin = margin;
             Children.Add(Label);
-            Label.Visibility = Visibility.Visible;
 
             // Card View
             View = new AnimatedCardList();
@@ -35,7 +34,7 @@ namespace MulliganWinrate
             Cards = new List<Card>();
         }
 
-        public void Update(Card card)
+        public void Update(Card card, Dictionary<int, double> winrates)
         {
             View.Visibility = Visibility.Visible;
             Label.Visibility = Visibility.Visible;
@@ -50,7 +49,7 @@ namespace MulliganWinrate
             // Update View
             Cards.Add(card);
             View.Update(Cards, false);
-            _winrateTracker.Update(card, Cards, View);
+            _winrateTracker.Update(card, Cards, View, winrates);
         }
     }
 }
