@@ -29,8 +29,7 @@ namespace MulliganWinrate
 
         public MulliganView Mulligan;
         private StackPanel _friendlyPanel;
-        private const string Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        private static readonly int AlphabetLength = Alphabet.Length;
+        
 
         public static InputManager Input;
         private Dictionary<int, double> _winrates;
@@ -108,7 +107,7 @@ namespace MulliganWinrate
         
         public static Dictionary<int, double> CreateWinRatesDictionary()
         {
-            var shortId = GetShortId(CoreAPI.Game.CurrentSelectedDeck);
+            string shortId = ShortIdHelper.GetShortId(DeckList.Instance.ActiveDeck);
 
             Log.Error(shortId);
 
@@ -170,38 +169,7 @@ namespace MulliganWinrate
             return winrateDict;
         }
 
-        private static string GetShortId(Deck deck)
-        {
-            if (deck == null || deck.Cards.Count == 0)
-                return string.Empty;
-            try
-            {
-                var ids = deck.Cards.SelectMany(c => Enumerable.Repeat(c.Id.ToString(), c.Count));
-                var idString = string.Join(",", ids.OrderBy(x => x, new Utf8StringComperer()));
-                var bytes = Encoding.UTF8.GetBytes(idString);
-                var hash = MD5.Create().ComputeHash(bytes);
-                var hex = BitConverter.ToString(hash).Replace("-", string.Empty);
-                return IntToString(BigInteger.Parse("00" + hex, NumberStyles.HexNumber));
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-                return string.Empty;
-            }
-        }
 
-        private static string IntToString(BigInteger number)
-        {
-            var sb = new StringBuilder();
-            while (number > 0)
-            {
-                var mod = number % AlphabetLength;
-                sb.Append(Alphabet[(int) mod]);
-                number = number / AlphabetLength;
-            }
-
-            return sb.ToString();
-        }
         
         
     }
