@@ -8,7 +8,7 @@ namespace MulliganWinrate
     {
         private MulliganWinrate _mulliganWinrateInstance;
 
-        public string Author => "Devalish";
+        public string Author => "Devalish & AwesomeAl";
 
         public string ButtonText => "Settings";
 
