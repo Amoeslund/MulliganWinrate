@@ -1,25 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 using HDT.Plugins.Graveyard;
-using HearthDb.Deckstrings;
+using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.API;
 using Hearthstone_Deck_Tracker.HsReplay.Utility;
 using Hearthstone_Deck_Tracker.Utility.Logging;
 using Newtonsoft.Json;
-using Core = Hearthstone_Deck_Tracker.API.Core;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using Card = Hearthstone_Deck_Tracker.Hearthstone.Card;
-using CoreAPI = Hearthstone_Deck_Tracker.API.Core;
-using Deck = HearthMirror.Objects.Deck;
+using Core = Hearthstone_Deck_Tracker.API.Core;
 
 namespace MulliganWinrate
 {
@@ -138,7 +131,7 @@ namespace MulliganWinrate
 
                     jsonData = w.DownloadString(uri);
                     w.DownloadStringCompleted += (sender, e) =>
-                        Log.Info("string " + filename + " has completed downloading");
+                        Log.Info("Json data has completed downloading.");
                 }
                 catch (Exception ex)
                 {
