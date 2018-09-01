@@ -1,13 +1,12 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using HDT.Plugins.Graveyard;
 using Hearthstone_Deck_Tracker;
 using Core = Hearthstone_Deck_Tracker.API.Core;
 
 namespace MulliganWinrate
 {
-	public class InputManager
+    public class InputManager
 	{
 		private User32.MouseInput _mouseInput;
 		private StackPanel _player;
@@ -79,7 +78,7 @@ namespace MulliganWinrate
 			} 
 		}
 
-		private bool PointInsideControl(Point p, FrameworkElement control) {
+		private static bool PointInsideControl(Point p, FrameworkElement control) {
 			var pos = control.PointFromScreen(p);
 			return pos.X > 0 && pos.X < control.ActualWidth && pos.Y > 0 && pos.Y < control.ActualHeight;
 		}

@@ -1,12 +1,11 @@
 using System.Windows;
 using System.Windows.Controls;
-using HDT.Plugins.Graveyard;
 using Hearthstone_Deck_Tracker;
 using MahApps.Metro.Controls;
 
 namespace MulliganWinrate
 {
-	public partial class SettingsView : ScrollViewer
+    public partial class SettingsView : ScrollViewer
 	{
 		private static Flyout _flyout;
 
@@ -24,7 +23,7 @@ namespace MulliganWinrate
 
 		private static Flyout CreateSettingsFlyout()
 		{
-			var settings = new Flyout();
+            Flyout settings = new Flyout();
 			settings.Position = Position.Left;
 			Panel.SetZIndex(settings, 100);
 			settings.Header = "Mulligan Winrate Settings";

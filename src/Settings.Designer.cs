@@ -1,11 +1,14 @@
-﻿namespace HDT.Plugins.Graveyard {
+﻿using System.Configuration;
+using System.Diagnostics;
+
+namespace MulliganWinrate {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
-    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    public sealed partial class Settings : ApplicationSettingsBase {
         
-        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+        private static Settings defaultInstance = ((Settings)(ApplicationSettingsBase.Synchronized(new Settings())));
         
         public static Settings Default {
             get {
@@ -13,9 +16,9 @@
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [UserScopedSettingAttribute()]
+        [DebuggerNonUserCodeAttribute()]
+        [DefaultSettingValueAttribute("100")]
         public double EnemyScale {
             get {
                 return ((double)(this["EnemyScale"]));
@@ -25,9 +28,9 @@
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [UserScopedSettingAttribute()]
+        [DebuggerNonUserCodeAttribute()]
+        [DefaultSettingValueAttribute("100")]
         public double EnemyOpacity {
             get {
                 return ((double)(this["EnemyOpacity"]));
@@ -37,9 +40,9 @@
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [UserScopedSettingAttribute()]
+        [DebuggerNonUserCodeAttribute()]
+        [DefaultSettingValueAttribute("100")]
         public double FriendlyScale {
             get {
                 return ((double)(this["FriendlyScale"]));
@@ -49,9 +52,9 @@
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [UserScopedSettingAttribute()]
+        [DebuggerNonUserCodeAttribute()]
+        [DefaultSettingValueAttribute("100")]
         public double FriendlyOpacity {
             get {
                 return ((double)(this["FriendlyOpacity"]));
@@ -61,9 +64,9 @@
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [UserScopedSettingAttribute()]
+        [DebuggerNonUserCodeAttribute()]
+        [DefaultSettingValueAttribute("0")]
         public double PlayerTop {
             get {
                 return ((double)(this["PlayerTop"]));
@@ -73,9 +76,9 @@
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [UserScopedSettingAttribute()]
+        [DebuggerNonUserCodeAttribute()]
+        [DefaultSettingValueAttribute("0")]
         public double EnemyTop {
             get {
                 return ((double)(this["EnemyTop"]));
@@ -85,9 +88,9 @@
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [UserScopedSettingAttribute()]
+        [DebuggerNonUserCodeAttribute()]
+        [DefaultSettingValueAttribute("0")]
         public double PlayerLeft {
             get {
                 return ((double)(this["PlayerLeft"]));
@@ -97,9 +100,9 @@
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [UserScopedSettingAttribute()]
+        [DebuggerNonUserCodeAttribute()]
+        [DefaultSettingValueAttribute("0")]
         public double EnemyLeft {
             get {
                 return ((double)(this["EnemyLeft"]));
@@ -109,9 +112,9 @@
             }
         }
 
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [UserScopedSettingAttribute()]
+        [DebuggerNonUserCodeAttribute()]
+        [DefaultSettingValueAttribute("True")]
         public bool NormalEnabled {
             get {
                 return ((bool)(this["NormalEnabled"]));
@@ -121,9 +124,9 @@
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [UserScopedSettingAttribute()]
+        [DebuggerNonUserCodeAttribute()]
+        [DefaultSettingValueAttribute("True")]
         public bool EnemyEnabled {
             get {
                 return ((bool)(this["EnemyEnabled"]));
@@ -132,101 +135,7 @@
                 this["EnemyEnabled"] = value;
             }
         }
-                
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ResurrectEnabled {
-            get {
-                return ((bool)(this["ResurrectEnabled"]));
-            }
-            set {
-                this["ResurrectEnabled"] = value;
-            }
-        }
+         
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ResurrectKazakus {
-            get {
-                return ((bool)(this["ResurrectKazakus"]));
-            }
-            set {
-                this["ResurrectKazakus"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool AnyfinEnabled {
-            get {
-                return ((bool)(this["AnyfinEnabled"]));
-            }
-            set {
-                this["AnyfinEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool NZothEnabled {
-            get {
-                return ((bool)(this["NZothEnabled"]));
-            }
-            set {
-                this["NZothEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool DiscardEnabled {
-            get {
-                return ((bool)(this["DiscardEnabled"]));
-            }
-            set {
-                this["DiscardEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool HadronoxEnabled {
-            get {
-                return ((bool)(this["HadronoxEnabled"]));
-            }
-            set {
-                this["HadronoxEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool GuldanEnabled {
-            get {
-                return ((bool)(this["GuldanEnabled"]));
-            }
-            set {
-                this["GuldanEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ShudderwockEnabled {
-            get {
-                return ((bool)(this["ShudderwockEnabled"]));
-            }
-            set {
-                this["ShudderwockEnabled"] = value;
-            }
-        }
     }
 }
