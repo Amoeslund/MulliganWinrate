@@ -14,6 +14,7 @@ namespace MulliganWinrate
         public HearthstoneTextBlock Label;
         public AnimatedCardList View;
         private WinrateTracker _winrateTracker = new WinrateTracker();
+
         public MulliganView()
         {
             // Section Label
@@ -40,16 +41,28 @@ namespace MulliganWinrate
             Label.Visibility = Visibility.Visible;
             // Increment
             var match = Cards.FirstOrDefault(c => c.Name == card.Name);
+            if (match == null)
+            {
+                Cards.Add(card);
+                View.Update(Cards, false);
+                _winrateTracker.Update(card, Cards, View, winrates);
+            }
+
+            // Update View
+        }
+
+        public void HighlightCard(Card card)
+        {
+            var match = Cards.FirstOrDefault(c => c.Name == card.Name);
             if (match != null)
             {
                 Cards.Remove(match);
                 card = match.Clone() as Card;
+                card.HighlightInHand = true;
                 card.Count++;
             }
-            // Update View
-            Cards.Add(card);
-            View.Update(Cards, false);
-            _winrateTracker.Update(card, Cards, View, winrates);
+
+            _winrateTracker.Highlight(card);
         }
     }
 }
