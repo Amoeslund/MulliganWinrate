@@ -27,7 +27,7 @@ namespace MulliganWinrate
 			var settings = new Flyout();
 			settings.Position = Position.Left;
 			Panel.SetZIndex(settings, 100);
-			settings.Header = "Graveyard Settings";
+			settings.Header = "Mulligan Winrates Settings";
 			settings.Content = new SettingsView();
 			Core.MainWindow.Flyouts.Items.Add(settings);
 			return settings;

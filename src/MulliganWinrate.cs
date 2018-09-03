@@ -12,14 +12,19 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using HDT.Plugins.Graveyard;
 using HearthDb.Deckstrings;
+using HearthMirror.Objects;
+using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.API;
+using Hearthstone_Deck_Tracker.Hearthstone;
 using Hearthstone_Deck_Tracker.HsReplay.Utility;
+using Hearthstone_Deck_Tracker.Importing.Websites;
 using Hearthstone_Deck_Tracker.Utility.Logging;
 using Newtonsoft.Json;
 using Core = Hearthstone_Deck_Tracker.API.Core;
 using Card = Hearthstone_Deck_Tracker.Hearthstone.Card;
 using CoreAPI = Hearthstone_Deck_Tracker.API.Core;
 using Deck = HearthMirror.Objects.Deck;
+using Hearthstone_Deck_Tracker.HsReplay;
 
 namespace MulliganWinrate
 {
@@ -29,11 +34,12 @@ namespace MulliganWinrate
 
         public MulliganView Mulligan;
         private StackPanel _friendlyPanel;
-        private const string Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        private static readonly int AlphabetLength = Alphabet.Length;
+        
 
         public static InputManager Input;
         private Dictionary<int, double> _winrates;
+        private static double _deckWinrate;
+        private static bool has;
 
         public MulliganWinrate()
         {
@@ -53,30 +59,17 @@ namespace MulliganWinrate
             GameEvents.OnGameStart.Add(SetUpWinrates);
             GameEvents.OnPlayerDraw.Add(AddToMulligan);
             GameEvents.OnGameEnd.Add(Reset);
-            DeckManagerEvents.OnDeckSelected.Add(d=> SetUpWinrates());
-
         }
 
-        private void SetUpWinrates()
-        {
-            Mulligan = new MulliganView {Label = {Visibility = Visibility.Hidden}};
-            _friendlyPanel.Children.Add(Mulligan);
-            _winrates = CreateWinRatesDictionary();
-        }
 
         private void AddToMulligan(Card card)
         {
-            if (!Core.Game.IsMulliganDone)
-            {
-                Mulligan.Update(card, _winrates);
-            }
-            else
+            if (Core.Game.IsMulliganDone)
             {
                 Reset();
             }
         }
 
-        //on year change clear out the grid and update the data
         private void SettingsChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             _friendlyPanel.RenderTransform = new ScaleTransform(Settings.Default.FriendlyScale / 100,
@@ -96,55 +89,77 @@ namespace MulliganWinrate
         */
         public void Reset()
         {
-                        
-
             _friendlyPanel.Children.Clear();
-
-
             Mulligan = new MulliganView {Label = {Visibility = Visibility.Hidden}};
             _friendlyPanel.Children.Add(Mulligan);
         }
-        
-        
-        public static Dictionary<int, double> CreateWinRatesDictionary()
+
+        private void SetUpWinrates()
         {
-            var shortId = GetShortId(CoreAPI.Game.CurrentSelectedDeck);
+            Reset();
+            var shortId = ShortIdHelper.GetShortId(DeckList.Instance.ActiveDeck);
+            //check to see if shortId is in the hsreplay_decks.cache if so go get data
+            var pos = Array.IndexOf(HsReplayDataManager.Decks.AvailableDecks, shortId);
+            var has = pos >= 0;
+            if (has)
+            {
+                _winrates = CreateWinRatesDictionary(shortId);
+            }
+                
+            Mulligan = new MulliganView {Label = {Visibility = Visibility.Hidden}};
 
-            Log.Error(shortId);
+            var label = new HearthstoneTextBlock
+            {
+                FontSize = 16, TextAlignment = TextAlignment.Center, Text = "Deck Winrate: " + _deckWinrate
+            };
+            var margin = label.Margin;
+            margin.Top = 20;
+            label.Margin = margin;
+            Mulligan.Children.Add(label);
+            _friendlyPanel.Children.Add(Mulligan);
+            foreach (var card in DeckList.Instance.ActiveDeck.Cards)
+            {
+                Mulligan.Update(card, _winrates);
+            }
 
-            var url =
+            Mulligan.Visibility = Visibility.Visible;
+            Mulligan.View.Visibility = Visibility.Visible;
+            Mulligan.Label.Visibility = Visibility.Visible;
+        }
+
+        private static Dictionary<int, double> CreateWinRatesDictionary(string shortid)
+        {
+                string  shortId = shortid;
+            
+                var url =
                 "https://hsreplay.net/analytics/query/single_deck_mulligan_guide/?GameType=RANKED_STANDARD&RankRange=ALL&Region=ALL&deck_id=" +
                 shortId;
 
-            Uri uriDeck = new Uri(url);
-            var mulliganrootObject = _download_serialized_json_data<RootObject>(uriDeck);
-            var winrates = GetWinrates(mulliganrootObject);
+                var uriDeck = new Uri(url);
+                var mulliganrootObject = DownloadSerializedJsonData<RootObject>(uriDeck);
+                var winrates = GetWinrates(mulliganrootObject);
 
-            Log.Error(winrates.Keys.Count.ToString());
-            var deckWinrate = mulliganrootObject.series.metadata.base_winrate;
-            return winrates;
+                _deckWinrate = mulliganrootObject.series.metadata.base_winrate;
+
+                return winrates;
+            //TODO logic for opponent and rank here if premium
+
         }
 
-        private static T _download_serialized_json_data<T>(Uri uri, [Optional] string filename) where T : new()
+        private static T DownloadSerializedJsonData<T>(Uri uri) where T : new()
         {
             using (var w = new WebClient())
             {
                 var jsonData = string.Empty;
                 // attempt to download JSON data as a string
-                // also download to file 
                 try
                 {
-                    //w.DownloadFileAsync(uri, filename);
-                    //w.DownloadFileCompleted += (sender, e) => logger.Info(filename + " has completed downloading");
-
                     jsonData = w.DownloadString(uri);
-                    w.DownloadStringCompleted += (sender, e) =>
-                        Log.Info("string " + filename + " has completed downloading");
                 }
                 catch (Exception ex)
                 {
                     Log.Error("Something went wrong with the download." +
-                              ex.Message); // render the exception with ${exception}
+                              ex.Message);
                 }
 
                 // if string with JSON data is not empty, deserialize it to class and return its instance 
@@ -160,7 +175,7 @@ namespace MulliganWinrate
             {
                 if (!all.opening_hand_winrate.Equals(null))
                 {
-                    if (!winrateDict.TryGetValue(all.dbf_id, out var temp))
+                    if (!winrateDict.TryGetValue(all.dbf_id, out _))
                     {
                         winrateDict.Add(all.dbf_id, all.opening_hand_winrate);
                     }
@@ -169,42 +184,8 @@ namespace MulliganWinrate
 
             return winrateDict;
         }
-
-        private static string GetShortId(Deck deck)
-        {
-            if (deck == null || deck.Cards.Count == 0)
-                return string.Empty;
-            try
-            {
-                var ids = deck.Cards.SelectMany(c => Enumerable.Repeat(c.Id.ToString(), c.Count));
-                var idString = string.Join(",", ids.OrderBy(x => x, new Utf8StringComperer()));
-                var bytes = Encoding.UTF8.GetBytes(idString);
-                var hash = MD5.Create().ComputeHash(bytes);
-                var hex = BitConverter.ToString(hash).Replace("-", string.Empty);
-                return IntToString(BigInteger.Parse("00" + hex, NumberStyles.HexNumber));
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-                return string.Empty;
-            }
-        }
-
-        private static string IntToString(BigInteger number)
-        {
-            var sb = new StringBuilder();
-            while (number > 0)
-            {
-                var mod = number % AlphabetLength;
-                sb.Append(Alphabet[(int) mod]);
-                number = number / AlphabetLength;
-            }
-
-            return sb.ToString();
-        }
-        
-        
     }
+
     public class Metadata
     {
         public string earliest_date { get; set; }

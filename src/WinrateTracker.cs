@@ -39,5 +39,10 @@ namespace MulliganWinrate
                 _winrates[cards[i]].Text = winratePercentage.ToString();
             }
         }
+
+        public void Highlight(Card card)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
