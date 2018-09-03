@@ -11,5 +11,5 @@ At the moment it does not have the features of Premium accounts for HSReplay. It
 # Installation
 
 
-[Install Guide] (https://github.com/HearthSim/Hearthstone-Deck-Tracker/wiki/Available-Plugins#how-to-install-plugins)
+[Install Guide](https://github.com/HearthSim/Hearthstone-Deck-Tracker/wiki/Available-Plugins#how-to-install-plugins)
 
