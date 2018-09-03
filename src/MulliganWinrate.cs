@@ -24,6 +24,7 @@ using Core = Hearthstone_Deck_Tracker.API.Core;
 using Card = Hearthstone_Deck_Tracker.Hearthstone.Card;
 using CoreAPI = Hearthstone_Deck_Tracker.API.Core;
 using Deck = HearthMirror.Objects.Deck;
+using Hearthstone_Deck_Tracker.HsReplay;
 
 namespace MulliganWinrate
 {
@@ -33,12 +34,12 @@ namespace MulliganWinrate
 
         public MulliganView Mulligan;
         private StackPanel _friendlyPanel;
-        private const string Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        private static readonly int AlphabetLength = Alphabet.Length;
+        
 
         public static InputManager Input;
         private Dictionary<int, double> _winrates;
         private static double _deckWinrate;
+        private static bool has;
 
         public MulliganWinrate()
         {
@@ -96,7 +97,15 @@ namespace MulliganWinrate
         private void SetUpWinrates()
         {
             Reset();
-            _winrates = CreateWinRatesDictionary();
+            var shortId = ShortIdHelper.GetShortId(DeckList.Instance.ActiveDeck);
+            //check to see if shortId is in the hsreplay_decks.cache if so go get data
+            var pos = Array.IndexOf(HsReplayDataManager.Decks.AvailableDecks, shortId);
+            var has = pos >= 0;
+            if (has)
+            {
+                _winrates = CreateWinRatesDictionary(shortId);
+            }
+                
             Mulligan = new MulliganView {Label = {Visibility = Visibility.Hidden}};
 
             var label = new HearthstoneTextBlock
@@ -118,20 +127,23 @@ namespace MulliganWinrate
             Mulligan.Label.Visibility = Visibility.Visible;
         }
 
-        private static Dictionary<int, double> CreateWinRatesDictionary()
+        private static Dictionary<int, double> CreateWinRatesDictionary(string shortid)
         {
-            var shortId = ShortIdHelper.GetShortId(DeckList.Instance.ActiveDeck);
-            //TODO logic for opponent and rank here if premium
-            var url =
+                string  shortId = shortid;
+            
+                var url =
                 "https://hsreplay.net/analytics/query/single_deck_mulligan_guide/?GameType=RANKED_STANDARD&RankRange=ALL&Region=ALL&deck_id=" +
                 shortId;
 
-            var uriDeck = new Uri(url);
-            var mulliganrootObject = DownloadSerializedJsonData<RootObject>(uriDeck);
-            var winrates = GetWinrates(mulliganrootObject);
+                var uriDeck = new Uri(url);
+                var mulliganrootObject = DownloadSerializedJsonData<RootObject>(uriDeck);
+                var winrates = GetWinrates(mulliganrootObject);
 
-            _deckWinrate = mulliganrootObject.series.metadata.base_winrate;
-            return winrates;
+                _deckWinrate = mulliganrootObject.series.metadata.base_winrate;
+
+                return winrates;
+            //TODO logic for opponent and rank here if premium
+
         }
 
         private static T DownloadSerializedJsonData<T>(Uri uri) where T : new()
