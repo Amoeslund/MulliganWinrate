@@ -37,19 +37,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HearthDb, Version=12.0.0.25770, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\AppData\Local\HearthstoneDeckTracker\app-1.7.5\HearthDb.dll</HintPath>
+      <HintPath>lib\HearthDb.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HearthMirror, Version=12.0.0.25770, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\AppData\Local\HearthstoneDeckTracker\app-1.7.5\HearthMirror.dll</HintPath>
+      <HintPath>lib\HearthMirror.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HearthstoneDeckTracker, Version=1.7.5.3684, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\AppData\Local\HearthstoneDeckTracker\app-1.7.5\HearthstoneDeckTracker.exe</HintPath>
+      <HintPath>lib\HearthstoneDeckTracker.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-      <HintPath>..\..\AppData\Local\HearthstoneDeckTracker\app-1.7.5\Newtonsoft.Json.dll</HintPath>
+      <HintPath>lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -96,7 +96,5 @@
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Debug' ">
-    <Copy SourceFiles="bin/Debug/MulliganWinrate.dll" DestinationFolder="$(AppData)\HearthstoneDeckTracker\Plugins" />
-  </Target>
+
 </Project>
