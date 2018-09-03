@@ -1,100 +1,103 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{59C8CCA4-7F9B-4592-87A8-A23ADED7759E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>MulliganWinrate</RootNamespace>
-    <AssemblyName>MulliganWinrate</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\x86\Release\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="HearthDb, Version=12.0.0.25770, Culture=neutral, PublicKeyToken=null">
-      <HintPath>lib\HearthDb.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HearthMirror, Version=12.0.0.25770, Culture=neutral, PublicKeyToken=null">
-      <HintPath>lib\HearthMirror.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HearthstoneDeckTracker, Version=1.7.5.3684, Culture=neutral, PublicKeyToken=null">
-      <HintPath>lib\HearthstoneDeckTracker.exe</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-      <HintPath>lib\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="MahApps.Metro">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\MahApps.Metro.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="src\MulliganView.cs" />
-    <Compile Include="src\Properties\AssemblyInfo.cs" />
-    <Compile Include="src\MulliganWinratePlugin.cs" />
-    <Compile Include="src\InputManager.cs" />
-    <Compile Include="src\MulliganWinrate.cs" />
-    <Compile Include="src\SettingsView.xaml.cs">
-      <DependentUpon>SettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="src\WinrateTracker.cs" />
-    <Page Include="src\SettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Compile Include="src\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <None Include="src\Settings.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+        <ProjectGuid>{59C8CCA4-7F9B-4592-87A8-A23ADED7759E}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <RootNamespace>MulliganWinrate</RootNamespace>
+        <AssemblyName>MulliganWinrate</AssemblyName>
+        <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+        <PlatformTarget>x86</PlatformTarget>
+        <OutputPath>bin\x86\Debug\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+        <PlatformTarget>x86</PlatformTarget>
+        <OutputPath>bin\x86\Release\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="HearthDb, Version=12.0.0.25770, Culture=neutral, PublicKeyToken=null">
+            <HintPath>lib\HearthDb.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="HearthMirror, Version=12.0.0.25770, Culture=neutral, PublicKeyToken=null">
+            <HintPath>lib\HearthMirror.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="HearthstoneDeckTracker, Version=1.7.5.3684, Culture=neutral, PublicKeyToken=null">
+            <HintPath>lib\HearthstoneDeckTracker.exe</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+            <HintPath>lib\Newtonsoft.Json.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="PresentationCore"/>
+        <Reference Include="PresentationFramework"/>
+        <Reference Include="System"/>
+        <Reference Include="System.Numerics"/>
+        <Reference Include="System.Xaml"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Drawing"/>
+        <Reference Include="System.Xml.Linq"/>
+        <Reference Include="System.Windows.Forms"/>
+        <Reference Include="System.Data.DataSetExtensions"/>
+        <Reference Include="Microsoft.CSharp"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Xml"/>
+        <Reference Include="WindowsBase"/>
+        <Reference Include="MahApps.Metro">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>lib\MahApps.Metro.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="src\MulliganView.cs"/>
+        <Compile Include="src\Properties\AssemblyInfo.cs"/>
+        <Compile Include="src\MulliganWinratePlugin.cs"/>
+        <Compile Include="src\InputManager.cs"/>
+        <Compile Include="src\MulliganWinrate.cs"/>
+        <Compile Include="src\SettingsView.xaml.cs">
+            <DependentUpon>SettingsView.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="src\WinrateTracker.cs"/>
+        <Page Include="src\SettingsView.xaml">
+            <SubType>Designer</SubType>
+            <Generator>MSBuild:Compile</Generator>
+        </Page>
+        <Compile Include="src\Settings.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTimeSharedInput>True</DesignTimeSharedInput>
+            <DependentUpon>Settings.settings</DependentUpon>
+        </Compile>
+        <None Include="src\Settings.settings">
+            <Generator>PublicSettingsSingleFileGenerator</Generator>
+            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+        </None>
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Debug' ">
+        <Copy SourceFiles="bin/Debug/MulliganWinrate.dll" DestinationFolder="$(AppData)\HearthstoneDeckTracker\Plugins"/>
+    </Target>
 </Project>

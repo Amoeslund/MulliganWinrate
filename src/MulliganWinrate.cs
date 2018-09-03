@@ -39,7 +39,6 @@ namespace MulliganWinrate
         public static InputManager Input;
         private Dictionary<int, double> _winrates;
         private static double _deckWinrate;
-        private static bool has;
 
         public MulliganWinrate()
         {
@@ -117,6 +116,12 @@ namespace MulliganWinrate
             label.Margin = margin;
             Mulligan.Children.Add(label);
             _friendlyPanel.Children.Add(Mulligan);
+
+            //foreach (var winrate in _winrates.Keys)
+            //{
+            //    Mulligan.Update(new Card(HearthDb.Cards.GetFromDbfId(winrate)),_winrates );
+            //}
+            
             foreach (var card in DeckList.Instance.ActiveDeck.Cards)
             {
                 Mulligan.Update(card, _winrates);
@@ -169,20 +174,10 @@ namespace MulliganWinrate
 
         private static Dictionary<int, double> GetWinrates(RootObject rootObject)
         {
-            var winrateDict = new Dictionary<int, double>();
-
-            foreach (var all in rootObject.series.data.ALL)
-            {
-                if (!all.opening_hand_winrate.Equals(null))
-                {
-                    if (!winrateDict.TryGetValue(all.dbf_id, out _))
-                    {
-                        winrateDict.Add(all.dbf_id, all.opening_hand_winrate);
-                    }
-                }
-            }
-
-            return winrateDict;
+            var results = from e in rootObject.series.data.ALL
+                orderby e.opening_hand_winrate descending
+                select new { e.dbf_id, e.opening_hand_winrate };
+            return results.ToDictionary(result => result.dbf_id, result => result.opening_hand_winrate);
         }
     }
 

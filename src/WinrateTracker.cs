@@ -11,13 +11,13 @@ namespace MulliganWinrate
 {
     public class WinrateTracker
     {
-        private Dictionary<Card, HearthstoneTextBlock> _winrates = new Dictionary<Card, HearthstoneTextBlock>();
+        private Dictionary<Card, HearthstoneTextBlock> _winratesToCardMapping = new Dictionary<Card, HearthstoneTextBlock>();
 
         public void Update(Card card, List<Card> cards, AnimatedCardList view, Dictionary<int, double> winrates)
         {
             for (var i = 0; i < cards.Count; i++)
             {
-                if (!_winrates.ContainsKey(cards[i]))
+                if (!_winratesToCardMapping.ContainsKey(cards[i]))
                 {
                     var winrate = new HearthstoneTextBlock {FontSize = 18, TextAlignment = TextAlignment.Left};
                     if (view.Items.Count > i)
@@ -32,11 +32,11 @@ namespace MulliganWinrate
                         }
                     }
 
-                    _winrates.Add(cards[i], winrate);
+                    _winratesToCardMapping.Add(cards[i], winrate);
                 }
 
                 winrates.TryGetValue(cards[i].DbfIf, out var winratePercentage);
-                _winrates[cards[i]].Text = winratePercentage.ToString();
+                _winratesToCardMapping[cards[i]].Text = winratePercentage.ToString();
             }
         }
 
