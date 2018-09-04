@@ -25,6 +25,7 @@ using Card = Hearthstone_Deck_Tracker.Hearthstone.Card;
 using CoreAPI = Hearthstone_Deck_Tracker.API.Core;
 using Deck = HearthMirror.Objects.Deck;
 using Hearthstone_Deck_Tracker.HsReplay;
+// ReSharper disable InconsistentNaming
 
 namespace MulliganWinrate
 {
@@ -174,9 +175,8 @@ namespace MulliganWinrate
 
         private static Dictionary<int, double> GetWinrates(RootObject rootObject)
         {
-            var results = from e in rootObject.series.data.ALL
-                orderby e.opening_hand_winrate descending
-                select new { e.dbf_id, e.opening_hand_winrate };
+            var results = rootObject.series.data.ALL.OrderByDescending(e => e.opening_hand_winrate)
+                .Select(e => new {e.dbf_id, e.opening_hand_winrate});
             return results.ToDictionary(result => result.dbf_id, result => result.opening_hand_winrate);
         }
     }
