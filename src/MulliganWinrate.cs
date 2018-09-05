@@ -44,8 +44,10 @@ namespace MulliganWinrate
         public MulliganWinrate()
         {
             // Create container
-            _friendlyPanel = new StackPanel();
-            _friendlyPanel.Orientation = Orientation.Vertical;
+            _friendlyPanel = new StackPanel
+            {
+                Orientation = Orientation.Vertical
+            };
             Core.OverlayCanvas.Children.Add(_friendlyPanel);
             Canvas.SetTop(_friendlyPanel, Settings.Default.PlayerTop);
             Canvas.SetLeft(_friendlyPanel, Settings.Default.PlayerLeft);
@@ -104,39 +106,43 @@ namespace MulliganWinrate
             if (has)
             {
                 _winrates = CreateWinRatesDictionary(shortId);
+                foreach (var card in DeckList.Instance.ActiveDeck.Cards)
+                {
+                    Mulligan.Update(card, _winrates);
+                }
+
+                Mulligan = new MulliganView { Label = { Visibility = Visibility.Hidden } };
+
+                var label = new HearthstoneTextBlock
+                {
+                    FontSize = 16,
+                    TextAlignment = TextAlignment.Center,
+                    Text = "Deck Winrate: " + _deckWinrate
+                };
+                var margin = label.Margin;
+                margin.Top = 20;
+                label.Margin = margin;
+                Mulligan.Children.Add(label);
+                _friendlyPanel.Children.Add(Mulligan);
+                Mulligan.Visibility = Visibility.Visible;
+                Mulligan.View.Visibility = Visibility.Visible;
+                Mulligan.Label.Visibility = Visibility.Visible;
             }
                 
-            Mulligan = new MulliganView {Label = {Visibility = Visibility.Hidden}};
-
-            var label = new HearthstoneTextBlock
-            {
-                FontSize = 16, TextAlignment = TextAlignment.Center, Text = "Deck Winrate: " + _deckWinrate
-            };
-            var margin = label.Margin;
-            margin.Top = 20;
-            label.Margin = margin;
-            Mulligan.Children.Add(label);
-            _friendlyPanel.Children.Add(Mulligan);
+            
 
             //foreach (var winrate in _winrates.Keys)
             //{
             //    Mulligan.Update(new Card(HearthDb.Cards.GetFromDbfId(winrate)),_winrates );
             //}
             
-            foreach (var card in DeckList.Instance.ActiveDeck.Cards)
-            {
-                Mulligan.Update(card, _winrates);
-            }
-
-            Mulligan.Visibility = Visibility.Visible;
-            Mulligan.View.Visibility = Visibility.Visible;
-            Mulligan.Label.Visibility = Visibility.Visible;
+            
         }
 
         private static Dictionary<int, double> CreateWinRatesDictionary(string shortid)
         {
-                string  shortId = shortid;
-            
+                var  shortId = shortid;
+
                 var url =
                 "https://hsreplay.net/analytics/query/single_deck_mulligan_guide/?GameType=RANKED_STANDARD&RankRange=ALL&Region=ALL&deck_id=" +
                 shortId;
