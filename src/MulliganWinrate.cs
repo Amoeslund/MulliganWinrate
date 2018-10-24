@@ -1,30 +1,24 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
-using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Media;
 using HDT.Plugins.Graveyard;
-using HearthDb.Deckstrings;
-using HearthMirror.Objects;
+using HearthDb;
 using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.API;
-using Hearthstone_Deck_Tracker.Hearthstone;
+using Hearthstone_Deck_Tracker.HsReplay;
 using Hearthstone_Deck_Tracker.HsReplay.Utility;
-using Hearthstone_Deck_Tracker.Importing.Websites;
 using Hearthstone_Deck_Tracker.Utility.Logging;
 using Newtonsoft.Json;
-using Core = Hearthstone_Deck_Tracker.API.Core;
 using Card = Hearthstone_Deck_Tracker.Hearthstone.Card;
 using CoreAPI = Hearthstone_Deck_Tracker.API.Core;
-using Deck = HearthMirror.Objects.Deck;
-using Hearthstone_Deck_Tracker.HsReplay;
+using Orientation = System.Windows.Controls.Orientation;
+
 // ReSharper disable InconsistentNaming
 
 namespace MulliganWinrate
@@ -48,7 +42,7 @@ namespace MulliganWinrate
             {
                 Orientation = Orientation.Vertical
             };
-            Core.OverlayCanvas.Children.Add(_friendlyPanel);
+            CoreAPI.OverlayCanvas.Children.Add(_friendlyPanel);
             Canvas.SetTop(_friendlyPanel, Settings.Default.PlayerTop);
             Canvas.SetLeft(_friendlyPanel, Settings.Default.PlayerLeft);
 
@@ -68,13 +62,13 @@ namespace MulliganWinrate
         private void AddToMulligan(Card card)
         {
             Mulligan.HighlightCard(card);
-            if (Core.Game.IsMulliganDone)
+            if (CoreAPI.Game.IsMulliganDone)
             {
                 Reset();
             }
         }
 
-        private void SettingsChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void SettingsChanged(object sender, PropertyChangedEventArgs e)
         {
             _friendlyPanel.RenderTransform = new ScaleTransform(Settings.Default.FriendlyScale / 100,
                 Settings.Default.FriendlyScale / 100);
@@ -83,7 +77,7 @@ namespace MulliganWinrate
 
         public void Dispose()
         {
-            Core.OverlayCanvas.Children.Remove(_friendlyPanel);
+            CoreAPI.OverlayCanvas.Children.Remove(_friendlyPanel);
 
             Input.Dispose();
         }
@@ -108,10 +102,8 @@ namespace MulliganWinrate
             if (has)
             {
                 _winrates = CreateWinRatesDictionary(shortId);
-                foreach (var card in DeckList.Instance.ActiveDeck.Cards)
-                {
-                    Mulligan.Update(card, _winrates);
-                }
+                foreach (int key in _winrates.Keys)
+                    Mulligan.Update(new Card(Cards.GetFromDbfId(key)), _winrates);
 
                 Mulligan = new MulliganView { Label = { Visibility = Visibility.Hidden } };
 
@@ -127,7 +119,7 @@ namespace MulliganWinrate
                 Mulligan.Children.Add(label);
                 _friendlyPanel.Children.Add(Mulligan);
                 Mulligan.Visibility = Visibility.Visible;
-                Mulligan.View.Visibility = Visibility.Visible;
+                Mulligan.MulliganWinratesCardList.Visibility = Visibility.Visible;
                 Mulligan.Label.Visibility = Visibility.Visible;
             }
                 
