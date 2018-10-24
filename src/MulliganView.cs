@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Controls;
 using Card = Hearthstone_Deck_Tracker.Hearthstone.Card;
@@ -53,16 +54,18 @@ namespace MulliganWinrate
 
         public void HighlightCard(Card card)
         {
-            var match = Cards.FirstOrDefault(c => c.Name == card.Name);
-            if (match != null)
+
+            var cardPosition = _winrateTracker.GetPosition(card);
+            if (cardPosition == -1)
             {
-                Cards.Remove(match);
-                card = match.Clone() as Card;
-                card.HighlightInHand = true;
-                card.Count++;
+                return;
+            }
+            if ((View.Items.GetItemAt(cardPosition) as UserControl)?.Content is Grid grid)
+            {
+                var textblock = (HearthstoneTextBlock) grid.Children[2];
+                textblock.Fill = new SolidColorBrush(Colors.Green);
             }
 
-            _winrateTracker.Highlight(card);
         }
     }
 }

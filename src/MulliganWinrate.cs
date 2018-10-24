@@ -61,11 +61,13 @@ namespace MulliganWinrate
             GameEvents.OnGameStart.Add(SetUpWinrates);
             GameEvents.OnPlayerDraw.Add(AddToMulligan);
             GameEvents.OnGameEnd.Add(Reset);
+            GameEvents.OnPlayerMulligan.Add(AddToMulligan);
         }
 
 
         private void AddToMulligan(Card card)
         {
+            Mulligan.HighlightCard(card);
             if (Core.Game.IsMulliganDone)
             {
                 Reset();
@@ -183,7 +185,13 @@ namespace MulliganWinrate
         {
             var results = rootObject.series.data.ALL.OrderByDescending(e => e.opening_hand_winrate)
                 .Select(e => new {e.dbf_id, e.opening_hand_winrate});
-            return results.ToDictionary(result => result.dbf_id, result => result.opening_hand_winrate);
+
+            var dictionary = new Dictionary<int, double>();
+            foreach (var result in results)
+            {
+                dictionary.Add(result.dbf_id, result.opening_hand_winrate);
+            }
+            return dictionary;
         }
     }
 

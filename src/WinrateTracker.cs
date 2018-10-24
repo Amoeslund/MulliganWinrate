@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
@@ -40,9 +41,18 @@ namespace MulliganWinrate
             }
         }
 
-        public void Highlight(Card card)
+        public int GetPosition(Card card)
         {
-            throw new System.NotImplementedException();
+            for (var i = 0; i < _winratesToCardMapping.Keys.Count; i++)
+            {
+                if (_winratesToCardMapping.Keys.ToList()[i].Id == card.Id)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
+        
     }
 }

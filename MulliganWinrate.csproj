@@ -73,6 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\json.cs" />
     <Compile Include="src\MulliganView.cs" />
     <Compile Include="src\Properties\AssemblyInfo.cs" />
     <Compile Include="src\MulliganWinratePlugin.cs" />
