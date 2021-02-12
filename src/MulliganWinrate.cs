@@ -5,7 +5,7 @@ using Hearthstone_Deck_Tracker.Utility.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -101,14 +101,14 @@ namespace MulliganWinrate
         {
             string shortId = ShortIdHelper.GetShortId(DeckList.Instance.ActiveDeck);
 
-            Log.Error(shortId);
+            Log.Info("ShortID of " + DeckList.Instance.ActiveDeck.Name + " is " + shortId);
 
             var url =
-                "https://hsreplay.net/analytics/query/single_deck_mulligan_guide/?GameType=RANKED_STANDARD&RankRange=ALL&Region=ALL&deck_id=" +
+                "	https://hsreplay.net/analytics/query/single_deck_mulligan_guide_v2/?GameType=RANKED_STANDARD&LeagueRankRange=BRONZE_THROUGH_GOLD&Region=ALL&PlayerInitiative=ALL&deck_id=" +
                 shortId;
 
             Uri uriDeck = new Uri(url);
-            var mulliganrootObject = _download_serialized_json_data<RootObject>(uriDeck);
+            var mulliganrootObject = Download_serialized_json_data<RootObject>(uriDeck);
             var winrates = GetWinrates(mulliganrootObject);
 
             Log.Error(winrates.Keys.Count.ToString());
@@ -116,31 +116,22 @@ namespace MulliganWinrate
             return winrates;
         }
 
-        private static T _download_serialized_json_data<T>(Uri uri, [Optional] string filename) where T : new()
+        private static T Download_serialized_json_data<T>(Uri uri) where T : new()
         {
-            using (var w = new WebClient())
+            var jsonData = string.Empty;
+            using (HttpClient client = new HttpClient())
             {
-                var jsonData = string.Empty;
-                // attempt to download JSON data as a string
-                // also download to file 
-                try
+                using (HttpResponseMessage response = client.GetAsync(uri).Result)
                 {
-                    //w.DownloadFileAsync(uri, filename);
-                    //w.DownloadFileCompleted += (sender, e) => logger.Info(filename + " has completed downloading");
-
-                    jsonData = w.DownloadString(uri);
-                    w.DownloadStringCompleted += (sender, e) =>
-                        Log.Info("Json data has completed downloading.");
+                    using (HttpContent content = response.Content)
+                    {
+                        var json = content.ReadAsStringAsync().Result;
+                        // if string with JSON data is not empty, deserialize it to class and return its instance 
+                        return !string.IsNullOrEmpty(json) ? JsonConvert.DeserializeObject<T>(json) : new T();
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Log.Error("Something went wrong with the download." +
-                              ex.Message); // render the exception with ${exception}
-                }
-
-                // if string with JSON data is not empty, deserialize it to class and return its instance 
-                return !string.IsNullOrEmpty(jsonData) ? JsonConvert.DeserializeObject<T>(jsonData) : new T();
             }
+            
         }
 
         private static Dictionary<int, double> GetWinrates(RootObject rootObject)
@@ -149,11 +140,11 @@ namespace MulliganWinrate
 
             foreach (var all in rootObject.series.data.ALL)
             {
-                if (!all.opening_hand_winrate.Equals(null))
+                if (!all.keep_percentage.Equals(null))
                 {
                     if (!winrateDict.TryGetValue(all.dbf_id, out var temp))
                     {
-                        winrateDict.Add(all.dbf_id, all.opening_hand_winrate);
+                        winrateDict.Add(all.dbf_id, all.keep_percentage);
                     }
                 }
             }

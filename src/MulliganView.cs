@@ -21,7 +21,7 @@ namespace MulliganWinrate
             Orientation = Orientation.Vertical;
             Label = new HearthstoneTextBlock
             {
-                FontSize = 16, TextAlignment = TextAlignment.Center, Text = "Mulligan Winrates"
+                FontSize = 16, TextAlignment = TextAlignment.Center, Text = "Keep Percentage"
             };
             var margin = Label.Margin;
             margin.Top = 20;

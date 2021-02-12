@@ -19,7 +19,7 @@ namespace MulliganWinrate
             {
                 if (!_winrates.ContainsKey(cards[i]))
                 {
-                    var winrate = new HearthstoneTextBlock {FontSize = 18, TextAlignment = TextAlignment.Left};
+                    var winrate = new HearthstoneTextBlock {FontSize = 16, TextAlignment = TextAlignment.Left };
                     if (view.Items.Count > i)
                     {
                         if ((view.Items.GetItemAt(i) as UserControl)?.Content is Grid grid)
