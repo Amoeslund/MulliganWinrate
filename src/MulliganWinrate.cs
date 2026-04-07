@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -61,6 +61,7 @@ namespace MulliganWinrate
 
         private void AddToMulligan(Card card)
         {
+            if (Mulligan == null) return;
             Mulligan.HighlightCard(card);
             if (CoreAPI.Game.IsMulliganDone)
             {
@@ -105,30 +106,20 @@ namespace MulliganWinrate
                 foreach (int key in _winrates.Keys)
                     Mulligan.Update(new Card(Cards.GetFromDbfId(key)), _winrates);
 
-                Mulligan = new MulliganView { Label = { Visibility = Visibility.Hidden } };
-
                 var label = new HearthstoneTextBlock
                 {
                     FontSize = 16,
                     TextAlignment = TextAlignment.Center,
-                    Text = "Deck Winrate: " + _deckWinrate
+                    Text = "Deck Winrate: " + _deckWinrate.ToString("P1")
                 };
                 var margin = label.Margin;
                 margin.Top = 20;
                 label.Margin = margin;
                 Mulligan.Children.Add(label);
-                _friendlyPanel.Children.Add(Mulligan);
                 Mulligan.Visibility = Visibility.Visible;
                 Mulligan.MulliganWinratesCardList.Visibility = Visibility.Visible;
                 Mulligan.Label.Visibility = Visibility.Visible;
             }
-                
-            
-
-            //foreach (var winrate in _winrates.Keys)
-            //{
-            //    Mulligan.Update(new Card(HearthDb.Cards.GetFromDbfId(winrate)),_winrates );
-            //}
             
             
         }
@@ -152,25 +143,28 @@ namespace MulliganWinrate
 
         }
 
+        private static readonly HttpClient _httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+
         private static T DownloadSerializedJsonData<T>(Uri uri) where T : new()
         {
-            using (var w = new WebClient())
+            var jsonData = string.Empty;
+            try
             {
-                var jsonData = string.Empty;
-                // attempt to download JSON data as a string
-                try
+                var response = _httpClient.GetAsync(uri).GetAwaiter().GetResult();
+                if (!response.IsSuccessStatusCode)
                 {
-                    jsonData = w.DownloadString(uri);
+                    Log.Error($"HSReplay returned {(int)response.StatusCode} {response.ReasonPhrase} for {uri}. " +
+                              "The endpoint may require authentication or have changed.");
+                    return new T();
                 }
-                catch (Exception ex)
-                {
-                    Log.Error("Something went wrong with the download." +
-                              ex.Message);
-                }
-
-                // if string with JSON data is not empty, deserialize it to class and return its instance 
-                return !string.IsNullOrEmpty(jsonData) ? JsonConvert.DeserializeObject<T>(jsonData) : new T();
+                jsonData = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
+            catch (Exception ex)
+            {
+                Log.Error("HSReplay request failed: " + ex.Message);
+            }
+
+            return !string.IsNullOrEmpty(jsonData) ? JsonConvert.DeserializeObject<T>(jsonData) : new T();
         }
 
         private static Dictionary<int, double> GetWinrates(RootObject rootObject)
