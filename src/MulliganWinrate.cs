@@ -86,7 +86,6 @@ namespace MulliganWinrate
 
         private void FinishMulliganEvent(Card card)
         {
-            if (Mulligan == null) return;
             Mulligan.HighlightCard(card);
             if (CoreAPI.Game.IsMulliganDone)
                 Reset();
