@@ -55,35 +55,37 @@ namespace MulliganWinrate
 
         public void HighlightCard(Card card)
         {
-
             var cardPosition = _winrateTracker.GetPosition(card);
             MulliganWinratesCardList.Update(Cards, false);
 
             var match = Cards.FirstOrDefault(c => c.Name == card.Name);
             if (match != null)
             {
-                Cards.Remove(card);
-                card.HighlightInHand = true;
+                Cards.Remove(match);
+                match.HighlightInHand = true;
                 MulliganWinratesCardList.Update(Cards, false);
             }
-            
+
             for (var i = 0; i < ((AnimatedCardList) Children[1]).Items.Count; i++)
             {
-                if ((((AnimatedCardList) Children[1]).Items.GetItemAt(i) as UserControl)?.Content is Grid grid2)
+                if ((((AnimatedCardList) Children[1]).Items.GetItemAt(i) as UserControl)?.Content is Grid grid2
+                    && grid2.Children.Count > 2
+                    && grid2.Children[2] is HearthstoneTextBlock tb2)
                 {
-                    ((HearthstoneTextBlock) grid2.Children[2]).Fill = new SolidColorBrush(Colors.Green);
+                    tb2.Fill = new SolidColorBrush(Colors.Green);
                 }
             }
 
-            if ((MulliganWinratesCardList.Items.GetItemAt(cardPosition) as UserControl)?.Content is Grid grid)
+            if (cardPosition >= 0
+                && cardPosition < MulliganWinratesCardList.Items.Count
+                && (MulliganWinratesCardList.Items.GetItemAt(cardPosition) as UserControl)?.Content is Grid grid
+                && grid.Children.Count > 2
+                && grid.Children[2] is HearthstoneTextBlock textblock)
             {
-                var textblock = (HearthstoneTextBlock) grid.Children[2];
                 textblock.Fill = new SolidColorBrush(Colors.Green);
-                grid.Children[2] = textblock;
             }
 
             MulliganWinratesCardList.Update(Cards, false);
-
         }
     }
 }

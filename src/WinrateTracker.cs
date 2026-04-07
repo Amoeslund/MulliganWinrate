@@ -37,7 +37,7 @@ namespace MulliganWinrate
                     _winratesToCardMapping.Add(cards[i], winrate);
                 }
 
-                winrates.TryGetValue(cards[i].DbfIf, out var winratePercentage);
+                winrates.TryGetValue(cards[i].DbfId, out var winratePercentage);
                 _winratesToCardMapping[cards[i]].Text = winratePercentage.ToString();
             }
         }
