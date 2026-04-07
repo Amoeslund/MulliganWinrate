@@ -34,6 +34,8 @@ namespace MulliganWinrate
         public static InputManager Input;
         private Dictionary<int, double> _winrates;
         private static double _deckWinrate;
+        private readonly MulliganHandOverlay _handOverlay = new MulliganHandOverlay();
+        private readonly List<Card> _mulliganHand = new List<Card>();
 
         public MulliganWinrate()
         {
@@ -53,20 +55,38 @@ namespace MulliganWinrate
 
             // Connect events
             GameEvents.OnGameStart.Add(SetUpWinrates);
-            GameEvents.OnPlayerDraw.Add(AddToMulligan);
+            GameEvents.OnPlayerDraw.Add(OnCardDrawn);
+            GameEvents.OnPlayerMulligan.Add(OnCardMulliganed);
             GameEvents.OnGameEnd.Add(Reset);
-            GameEvents.OnPlayerMulligan.Add(AddToMulligan);
         }
 
 
-        private void AddToMulligan(Card card)
+        private void OnCardDrawn(Card card)
         {
             if (Mulligan == null) return;
+            if (!CoreAPI.Game.IsMulliganDone && _winrates != null && _winrates.Count > 0)
+            {
+                _mulliganHand.Add(card);
+                _handOverlay.Show(_mulliganHand, _winrates, _deckWinrate);
+            }
             Mulligan.HighlightCard(card);
             if (CoreAPI.Game.IsMulliganDone)
-            {
                 Reset();
+        }
+
+        private void OnCardMulliganed(Card card)
+        {
+            if (Mulligan == null) return;
+            // Remove the mulliganed card so the label disappears from above that slot.
+            var existing = _mulliganHand.Find(c => c.Id == card.Id);
+            if (existing != null)
+            {
+                _mulliganHand.Remove(existing);
+                _handOverlay.Show(_mulliganHand, _winrates, _deckWinrate);
             }
+            Mulligan.HighlightCard(card);
+            if (CoreAPI.Game.IsMulliganDone)
+                Reset();
         }
 
         private void SettingsChanged(object sender, PropertyChangedEventArgs e)
@@ -79,7 +99,7 @@ namespace MulliganWinrate
         public void Dispose()
         {
             CoreAPI.OverlayCanvas.Children.Remove(_friendlyPanel);
-
+            _handOverlay.Clear();
             Input.Dispose();
         }
 
@@ -91,6 +111,8 @@ namespace MulliganWinrate
             _friendlyPanel.Children.Clear();
             Mulligan = new MulliganView {Label = {Visibility = Visibility.Hidden}};
             _friendlyPanel.Children.Add(Mulligan);
+            _handOverlay.Clear();
+            _mulliganHand.Clear();
         }
 
         private void SetUpWinrates()
