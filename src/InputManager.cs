@@ -37,7 +37,7 @@ namespace MulliganWinrate
 		}
 
 		public void Dispose () {
-			_mouseInput.Dispose();
+			_mouseInput?.Dispose();
 		}
 
 		private void MouseInputOnLmbDown(object sender, EventArgs eventArgs)
