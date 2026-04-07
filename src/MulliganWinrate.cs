@@ -67,7 +67,7 @@ namespace MulliganWinrate
             if (!CoreAPI.Game.IsMulliganDone && _winrates != null && _winrates.Count > 0)
             {
                 _mulliganHand.Add(card);
-                _handOverlay.Show(_mulliganHand, _winrates, _deckWinrate);
+                _handOverlay.Show(_mulliganHand, _winrates, _deckWinrate, _mulliganHand.Count);
             }
             FinishMulliganEvent(card);
         }
@@ -78,8 +78,9 @@ namespace MulliganWinrate
             var existing = _mulliganHand.Find(c => c.Id == card.Id);
             if (existing != null)
             {
+                var totalSlots = _mulliganHand.Count; // capture before removing
                 _mulliganHand.Remove(existing);
-                _handOverlay.Show(_mulliganHand, _winrates, _deckWinrate);
+                _handOverlay.Show(_mulliganHand, _winrates, _deckWinrate, totalSlots);
             }
             FinishMulliganEvent(card);
         }
@@ -148,6 +149,11 @@ namespace MulliganWinrate
                 Mulligan.Visibility = Visibility.Visible;
                 Mulligan.MulliganWinratesCardList.Visibility = Visibility.Visible;
                 Mulligan.Label.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                _winrates = null;
+                _deckWinrate = 0;
             }
             
             

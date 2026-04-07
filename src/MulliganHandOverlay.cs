@@ -24,16 +24,26 @@ namespace MulliganWinrate
         // Placed just above the top edge of the mulligan cards (~50 % height).
         private const double YFraction = 0.455;
 
-        public void Show(IList<Card> hand, Dictionary<int, double> winrates, double deckWinrate)
+        // Total number of slots fixed at first Show() call; slots never change
+        // during a mulligan even when cards are sent back.
+        private int _totalSlots;
+
+        /// <param name="hand">Cards still in hand (mulliganed cards removed).</param>
+        /// <param name="totalSlots">Original hand size — fixes the x-center array for the session.</param>
+        public void Show(IList<Card> hand, Dictionary<int, double> winrates, double deckWinrate, int totalSlots)
         {
             Clear();
-            if (hand == null || hand.Count == 0 || winrates == null) return;
+            if (hand == null || winrates == null) return;
+
+            _totalSlots = totalSlots > 0 ? totalSlots : hand.Count;
 
             var canvas = CoreAPI.OverlayCanvas;
             var canvasW = canvas.ActualWidth  > 0 ? canvas.ActualWidth  : 1920;
             var canvasH = canvas.ActualHeight > 0 ? canvas.ActualHeight : 1080;
 
-            var xCenters = hand.Count <= 3 ? XCenters3 : XCenters4;
+            // Use the slot count from the original draw, not the current hand size,
+            // so positions stay fixed while cards are being mulliganed away.
+            var xCenters = _totalSlots <= 3 ? XCenters3 : XCenters4;
 
             for (var i = 0; i < hand.Count && i < xCenters.Length; i++)
             {
@@ -41,7 +51,6 @@ namespace MulliganWinrate
 
                 var label = CreateLabel(wr, deckWinrate);
 
-                // Measure so we can center the label on the card's x-center.
                 label.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 var labelW = label.DesiredSize.Width > 0 ? label.DesiredSize.Width : 90;
 
@@ -58,6 +67,7 @@ namespace MulliganWinrate
             foreach (var label in _labels)
                 canvas.Children.Remove(label);
             _labels.Clear();
+            _totalSlots = 0;
         }
 
         private static Border CreateLabel(double winrate, double deckWinrate)
