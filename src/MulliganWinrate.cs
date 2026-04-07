@@ -69,21 +69,23 @@ namespace MulliganWinrate
                 _mulliganHand.Add(card);
                 _handOverlay.Show(_mulliganHand, _winrates, _deckWinrate);
             }
-            Mulligan.HighlightCard(card);
-            if (CoreAPI.Game.IsMulliganDone)
-                Reset();
+            FinishMulliganEvent(card);
         }
 
         private void OnCardMulliganed(Card card)
         {
             if (Mulligan == null) return;
-            // Remove the mulliganed card so the label disappears from above that slot.
             var existing = _mulliganHand.Find(c => c.Id == card.Id);
             if (existing != null)
             {
                 _mulliganHand.Remove(existing);
                 _handOverlay.Show(_mulliganHand, _winrates, _deckWinrate);
             }
+            FinishMulliganEvent(card);
+        }
+
+        private void FinishMulliganEvent(Card card)
+        {
             Mulligan.HighlightCard(card);
             if (CoreAPI.Game.IsMulliganDone)
                 Reset();
@@ -98,6 +100,11 @@ namespace MulliganWinrate
 
         public void Dispose()
         {
+            GameEvents.OnGameStart.Remove(SetUpWinrates);
+            GameEvents.OnPlayerDraw.Remove(OnCardDrawn);
+            GameEvents.OnPlayerMulligan.Remove(OnCardMulliganed);
+            GameEvents.OnGameEnd.Remove(Reset);
+            Settings.Default.PropertyChanged -= SettingsChanged;
             CoreAPI.OverlayCanvas.Children.Remove(_friendlyPanel);
             _handOverlay.Clear();
             Input.Dispose();

@@ -69,7 +69,6 @@ namespace MulliganWinrate
 
             var text = new TextBlock
             {
-                // Format: "▲ 68.2%" or "▼ 55.9%"
                 Text           = $"{(above ? "▲" : "▼")} {winrate * 100:F1}%",
                 Foreground     = Brushes.White,
                 FontSize       = 14,
