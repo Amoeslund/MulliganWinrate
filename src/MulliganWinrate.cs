@@ -36,6 +36,7 @@ namespace MulliganWinrate
         private static double _deckWinrate;
         private readonly MulliganHandOverlay _handOverlay = new MulliganHandOverlay();
         private readonly List<Card> _mulliganHand = new List<Card>();
+        private int _initialHandSize;
 
         public MulliganWinrate()
         {
@@ -67,7 +68,8 @@ namespace MulliganWinrate
             if (!CoreAPI.Game.IsMulliganDone && _winrates != null && _winrates.Count > 0)
             {
                 _mulliganHand.Add(card);
-                _handOverlay.Show(_mulliganHand, _winrates, _deckWinrate);
+                _initialHandSize = _mulliganHand.Count;
+                _handOverlay.Show(_mulliganHand, _winrates, _deckWinrate, _initialHandSize);
             }
             FinishMulliganEvent(card);
         }
@@ -79,14 +81,13 @@ namespace MulliganWinrate
             if (existing != null)
             {
                 _mulliganHand.Remove(existing);
-                _handOverlay.Show(_mulliganHand, _winrates, _deckWinrate);
+                _handOverlay.Show(_mulliganHand, _winrates, _deckWinrate, _initialHandSize);
             }
             FinishMulliganEvent(card);
         }
 
         private void FinishMulliganEvent(Card card)
         {
-            if (Mulligan == null) return;
             Mulligan.HighlightCard(card);
             if (CoreAPI.Game.IsMulliganDone)
                 Reset();
@@ -121,6 +122,7 @@ namespace MulliganWinrate
             _friendlyPanel.Children.Add(Mulligan);
             _handOverlay.Clear();
             _mulliganHand.Clear();
+            _initialHandSize = 0;
         }
 
         private void SetUpWinrates()
@@ -149,6 +151,11 @@ namespace MulliganWinrate
                 Mulligan.Visibility = Visibility.Visible;
                 Mulligan.MulliganWinratesCardList.Visibility = Visibility.Visible;
                 Mulligan.Label.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                _winrates = null;
+                _deckWinrate = 0;
             }
             
             
