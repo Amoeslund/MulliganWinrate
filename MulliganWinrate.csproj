@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MulliganWinrate</RootNamespace>
     <AssemblyName>MulliganWinrate</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -36,19 +36,19 @@
     <OutputPath>bin\x86\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HearthDb, Version=12.0.0.25770, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="HearthDb, Version=35.0.3.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>lib\HearthDb.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HearthMirror, Version=12.0.0.25770, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="HearthMirror, Version=32.4.2.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>lib\HearthMirror.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HearthstoneDeckTracker, Version=1.7.5.3684, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="HearthstoneDeckTracker, Version=1.51.5.7263, Culture=neutral, PublicKeyToken=null">
       <HintPath>lib\HearthstoneDeckTracker.exe</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>lib\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -67,7 +67,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-    <Reference Include="MahApps.Metro">
+    <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, PublicKeyToken=null">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\MahApps.Metro.dll</HintPath>
       <Private>False</Private>

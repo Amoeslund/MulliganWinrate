@@ -102,10 +102,7 @@ namespace MulliganWinrate
 
         public void Dispose()
         {
-            GameEvents.OnGameStart.Remove(SetUpWinrates);
-            GameEvents.OnPlayerDraw.Remove(OnCardDrawn);
-            GameEvents.OnPlayerMulligan.Remove(OnCardMulliganed);
-            GameEvents.OnGameEnd.Remove(Reset);
+            // ActionList no longer exposes Remove; HSDT cleans up plugin actions on unload.
             Settings.Default.PropertyChanged -= SettingsChanged;
             CoreAPI.OverlayCanvas.Children.Remove(_friendlyPanel);
             _handOverlay.Clear();

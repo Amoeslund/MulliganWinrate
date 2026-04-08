@@ -22,9 +22,9 @@ namespace MulliganWinrate
                 if (!_winratesToCardMapping.ContainsKey(cards[i]))
                 {
                     var winrate = new HearthstoneTextBlock {FontSize = 18, TextAlignment = TextAlignment.Left};
-                    if (view.Items.Count > i)
+                    if (view.AnimatedCards.Count > i)
                     {
-                        if ((view.Items.GetItemAt(i) as UserControl)?.Content is Grid grid)
+                        if ((view.AnimatedCards[i] as UserControl)?.Content is Grid grid)
                         {
                             grid.Width = 260;
                             ((Hearthstone_Deck_Tracker.Controls.Card) grid.Children[0]).HorizontalAlignment =

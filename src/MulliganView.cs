@@ -66,9 +66,9 @@ namespace MulliganWinrate
                 MulliganWinratesCardList.Update(Cards, false);
             }
 
-            for (var i = 0; i < ((AnimatedCardList) Children[1]).Items.Count; i++)
+            for (var i = 0; i < ((AnimatedCardList) Children[1]).AnimatedCards.Count; i++)
             {
-                if ((((AnimatedCardList) Children[1]).Items.GetItemAt(i) as UserControl)?.Content is Grid grid2
+                if ((((AnimatedCardList) Children[1]).AnimatedCards[i] as UserControl)?.Content is Grid grid2
                     && grid2.Children.Count > 2
                     && grid2.Children[2] is HearthstoneTextBlock tb2)
                 {
@@ -77,8 +77,8 @@ namespace MulliganWinrate
             }
 
             if (cardPosition >= 0
-                && cardPosition < MulliganWinratesCardList.Items.Count
-                && (MulliganWinratesCardList.Items.GetItemAt(cardPosition) as UserControl)?.Content is Grid grid
+                && cardPosition < MulliganWinratesCardList.AnimatedCards.Count
+                && (MulliganWinratesCardList.AnimatedCards[cardPosition] as UserControl)?.Content is Grid grid
                 && grid.Children.Count > 2
                 && grid.Children[2] is HearthstoneTextBlock textblock)
             {
